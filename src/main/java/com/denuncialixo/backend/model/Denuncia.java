@@ -1,3 +1,6 @@
+// Desenvolvido por: Arthur
+// Data: 21/05/2026
+
 package com.denuncialixo.backend.model;
 
 import jakarta.persistence.*;
