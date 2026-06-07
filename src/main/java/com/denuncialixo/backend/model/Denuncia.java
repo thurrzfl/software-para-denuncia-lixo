@@ -22,6 +22,7 @@ public class Denuncia {
     @Column(nullable = false)
     private String localizacao;
 
+    @Column(nullable = false)
     private String foto;
 
     @Column(nullable = false)
@@ -34,6 +35,12 @@ public class Denuncia {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @PrePersist
+    public void prePersist()
+    {       
+       this.dataCriacao = LocalDateTime.now();
+    }
 
     public enum Status {
         PENDENTE,
