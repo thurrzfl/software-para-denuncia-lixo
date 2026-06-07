@@ -1,3 +1,5 @@
+// Desenvolvido por: Arthu (tutu)
+// Data: 21/05/2026
 package com.denuncialixo.backend;
 
 import org.springframework.boot.SpringApplication;
