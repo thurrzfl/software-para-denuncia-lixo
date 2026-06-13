@@ -22,7 +22,7 @@ public class UsuarioService {
         if (usuarioRepository.emailJaExiste(usuario.getEmail())) {
             throw new RuntimeException("Email já cadastrado!");
         }
-       usuario.setDataCriacao(LocalDateTime.now());
+        usuario.setDataCriacao(LocalDateTime.now());
         usuario.setRole(Usuario.Role.USUARIO);
         return usuarioRepository.save(usuario);
     }
@@ -37,7 +37,7 @@ public class UsuarioService {
 
     public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
         Usuario usuario = usuarioRepository.buscarPorId(id)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
         usuario.setNome(usuarioAtualizado.getNome());
         usuario.setFotoPerfil(usuarioAtualizado.getFotoPerfil());
         return usuarioRepository.save(usuario);
@@ -45,7 +45,18 @@ public class UsuarioService {
 
     public void deletarUsuario(Long id) {
         Usuario usuario = usuarioRepository.buscarPorId(id)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
         usuarioRepository.delete(usuario);
     }
+
+    public Usuario login(String email, String senha) {
+        Usuario usuario = usuarioRepository.buscarPorEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!usuario.getSenha().equals(senha)) {
+            throw new RuntimeException("Senha incorreta!");
+        }
+        return usuario;
+    }
+
 }

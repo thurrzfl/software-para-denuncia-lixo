@@ -6,11 +6,14 @@ package com.denuncialixo.backend.controller;
 
 import com.denuncialixo.backend.model.Usuario;
 import com.denuncialixo.backend.service.UsuarioService;
+
+import org.hibernate.sql.results.spi.RowReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -36,13 +39,13 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         return usuarioService.buscarPorId(id)
-            .map(usuario -> ResponseEntity.ok(usuario))
-            .orElse(ResponseEntity.notFound().build());
+                .map(usuario -> ResponseEntity.ok(usuario))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, 
-                                       @RequestBody Usuario usuario) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id,
+            @RequestBody Usuario usuario) {
         try {
             Usuario atualizado = usuarioService.atualizarUsuario(id, usuario);
             return ResponseEntity.ok(atualizado);
@@ -60,4 +63,16 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+        try {
+            Usuario encontrado = usuarioService.login(usuario.getEmail(), usuario.getSenha());
+            return ResponseEntity.ok(encontrado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+
+    }
+
 }
